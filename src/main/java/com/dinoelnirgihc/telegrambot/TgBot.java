@@ -3,6 +3,7 @@ package com.dinoelnirgihc.telegrambot;
 import com.dinoelnirgihc.telegrambot.configuration.TgBotConfig;
 import com.dinoelnirgihc.telegrambot.model.BotMenu;
 import com.dinoelnirgihc.telegrambot.service.UserService;
+import com.vdurmont.emoji.EmojiParser;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -99,7 +100,7 @@ public class TgBot extends TelegramLongPollingBot
 
     private void helpCommandReceived(long chatId)
     {
-        sendMessage(chatId, HELP);
+        sendMessage(chatId,  HELP);
     }
 
     private void sendMessage(Long chatId, String message)

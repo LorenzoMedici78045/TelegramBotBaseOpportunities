@@ -3,6 +3,7 @@ package com.dinoelnirgihc.telegrambot.service;
 import com.dinoelnirgihc.telegrambot.embeddable.Username;
 import com.dinoelnirgihc.telegrambot.entity.User;
 import com.dinoelnirgihc.telegrambot.repository.UserRepository;
+import com.vdurmont.emoji.EmojiParser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,12 +47,12 @@ public class UserService
             userRepository.save(user);
             log.info("user saved: " + user);
 
-            return "Привет, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname();
+            return EmojiParser.parseToUnicode("Привет, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + ", " + ":wave:");
         }
         else
         {
             User user = userRepository.findById(message.getChatId()).orElseThrow();
-            return "Привет, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname();
+            return EmojiParser.parseToUnicode("Привет, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + ", " + ":wave:");
         }
 
     }
@@ -71,7 +72,7 @@ public class UserService
     {
          User user = userRepository.findById(message.getChatId()).orElseThrow();
          userRepository.delete(user);
-         return "Пользователь удален";
+         return EmojiParser.parseToUnicode("Пользователь удален, " + ":crying_cat_face:");
     }
 
     public String registerUserData(Message message)
@@ -92,12 +93,12 @@ public class UserService
                     .build();
 
             userRepository.save(user);
-            return "Вы зарегистрированы, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!";
+            return EmojiParser.parseToUnicode("Вы зарегистрированы, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!" + " :cat:");
         }
         else
         {
             User user = userRepository.findById(message.getChatId()).orElseThrow();
-            return "Вы зарегистрированы, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!";
+            return EmojiParser.parseToUnicode("Вы зарегистрированы, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!" + " :cat:");
         }
     }
 }
