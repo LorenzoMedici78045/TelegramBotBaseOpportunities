@@ -1,9 +1,8 @@
-package com.dinoelnirgihc.telegrambot;
+package com.dinoelnirgihc.telegrambot.controller;
 
 import com.dinoelnirgihc.telegrambot.configuration.TgBotConfig;
 import com.dinoelnirgihc.telegrambot.customization.BotMenu;
 import com.dinoelnirgihc.telegrambot.customization.MarkupFactory;
-import com.dinoelnirgihc.telegrambot.model.Text;
 import com.dinoelnirgihc.telegrambot.service.UserService;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.slf4j.Slf4j;
