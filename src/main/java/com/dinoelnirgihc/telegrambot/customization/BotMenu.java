@@ -1,4 +1,4 @@
-package com.dinoelnirgihc.telegrambot.model;
+package com.dinoelnirgihc.telegrambot.customization;
 
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 

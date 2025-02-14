@@ -27,6 +27,6 @@ public class User
     @Override
     public String toString()
     {
-        return "Пользователь был создан: " + username.getCreatedAt().toString() + " Данные: " + username.getFirstname() + " " + username.getLastname();
+        return "Пользователь был создан: " + "\n" + username.getCreatedAt().toString() + "\n" + "Данные: " + username.getFirstname() + " " + username.getLastname();
     }
 }

@@ -2,6 +2,7 @@ package com.dinoelnirgihc.telegrambot.service;
 
 import com.dinoelnirgihc.telegrambot.embeddable.Username;
 import com.dinoelnirgihc.telegrambot.entity.User;
+import com.dinoelnirgihc.telegrambot.model.Text;
 import com.dinoelnirgihc.telegrambot.repository.UserRepository;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.Data;
@@ -31,28 +32,15 @@ public class UserService
     {
         if(userRepository.findById(message.getChatId()).isEmpty()) {
 
-            Long chatId = message.getChatId();
-            Chat chat = message.getChat();
-
-            User user = User
-                    .builder()
-                    .id(chatId)
-                    .username(Username.builder()
-                            .firstname(chat.getFirstName())
-                            .lastname(chat.getLastName())
-                            .createdAt(new Timestamp(System.currentTimeMillis()))
-                            .build())
-                    .build();
-
-            userRepository.save(user);
+            User user = saveUser(message);
             log.info("user saved: " + user);
 
-            return EmojiParser.parseToUnicode("Привет, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + ", " + ":wave:");
+            return returnUserRegistoryWelcome(user, Text.registoryUser.get(0), Text.registoryUser.get(1));
         }
         else
         {
             User user = userRepository.findById(message.getChatId()).orElseThrow();
-            return EmojiParser.parseToUnicode("Привет, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + ", " + ":wave:");
+            return returnUserRegistoryWelcome(user, Text.registoryUser.get(0), Text.registoryUser.get(1));
         }
 
     }
@@ -68,37 +56,47 @@ public class UserService
         }
     }
 
-    public String deleteUserData(Message message)
+    public void deleteUserData(Message message)
     {
          User user = userRepository.findById(message.getChatId()).orElseThrow();
          userRepository.delete(user);
-         return EmojiParser.parseToUnicode("Пользователь удален, " + ":crying_cat_face:");
     }
 
     public String registerUserData(Message message)
     {
         if(userRepository.findById(message.getChatId()).isEmpty())
         {
-            Long chatId = message.getChatId();
-            Chat chat = message.getChat();
-
-            User user = User
-                    .builder()
-                    .id(chatId)
-                    .username(Username.builder()
-                            .firstname(chat.getFirstName())
-                            .lastname(chat.getLastName())
-                            .createdAt(new Timestamp(System.currentTimeMillis()))
-                            .build())
-                    .build();
-
-            userRepository.save(user);
-            return EmojiParser.parseToUnicode("Вы зарегистрированы, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!" + " :cat:");
+            User user = saveUser(message);
+            return returnUserRegistoryWelcome(user, Text.registoryData.get(0), Text.registoryData.get(1));
         }
         else
         {
             User user = userRepository.findById(message.getChatId()).orElseThrow();
-            return EmojiParser.parseToUnicode("Вы зарегистрированы, " + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!" + " :cat:");
+            return returnUserRegistoryWelcome(user, Text.registoryData.get(0), Text.registoryData.get(1));
         }
+    }
+
+    public String returnUserRegistoryWelcome(User user, String firstPost, String emoj)
+    {
+        return EmojiParser.parseToUnicode(firstPost + user.getUsername().getFirstname() + " " + user.getUsername().getLastname() + "!" + emoj);
+    }
+
+    public User saveUser(Message message)
+    {
+        Long chatId = message.getChatId();
+        Chat chat = message.getChat();
+
+        User user = User
+                .builder()
+                .id(chatId)
+                .username(Username.builder()
+                        .firstname(chat.getFirstName())
+                        .lastname(chat.getLastName())
+                        .createdAt(new Timestamp(System.currentTimeMillis()))
+                        .build())
+                .build();
+
+        userRepository.save(user);
+        return user;
     }
 }
